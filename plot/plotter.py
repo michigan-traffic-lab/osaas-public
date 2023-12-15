@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-from matplotlib import pyplot as plt
+import matplotlib
+import numpy as np
+from matplotlib import pyplot as plt, colors
 from matplotlib.collections import LineCollection
+from matplotlib.colorbar import ColorbarBase
+from matplotlib.colors import ListedColormap, Normalize
+from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
 
 from data_io.converter import extract_ts_lists_from_df
 
-SIGNAL_TO_COLOR = {'green': 'lime', 'yellow': 'yellow', 'red': 'r', 'red clearance': '#7F0000'}
+SIGNAL_TO_COLOR = {'green': 'green', 'yellow': 'yellow', 'red': 'r', 'red clearance': '#7F0000'}
 STOP_CAT_TO_COLOR = {'No stop': 'g', 'Stop once': 'orange', 'Stop more than once': 'purple'}
 
 
@@ -47,7 +52,8 @@ class Plotter:
     @staticmethod
     def _set_xticks(ax, pos_list, label_list=None):
         ax.set_xticks(pos_list)
-        ax.set_xticklabels(label_list)
+        if label_list:
+            ax.set_xticklabels(label_list)
 
     @staticmethod
     def _set_yticks(ax, pos_list, label_list=None):
@@ -86,6 +92,18 @@ class Plotter:
     @staticmethod
     def _plot_hist(ax, x_list, value_list, color):
         ax.bar(x_list, value_list, color=color, alpha=0.3, width=3, edgecolor='k')
+
+    @staticmethod
+    def _plot_cycle(ax, cycle, num):
+        for i in range(num):
+            ax.axvline(cycle * (i + 1), color='k', linestyle='--', lw=1.5, alpha=0.5)
+
+    @staticmethod
+    def build_cmap(emtpy_color='white'):
+        cmap = matplotlib.cm.get_cmap('viridis')
+        color_list = cmap(np.linspace(0, 1, 7500))
+        color_list[2000, :] = colors.to_rgba(emtpy_color)
+        return ListedColormap(color_list[2000:, :])
 
     def plot_no_agg_movement_ts(self, signal_df, trajs_df, name_prefix):
         x_lists, y_lists = extract_ts_lists_from_df(trajs_df, 'time (sec)', 'distance (meter)')
@@ -193,4 +211,50 @@ class Plotter:
                               color_list=signal_df['signal'].map(SIGNAL_TO_COLOR).tolist())
         self._set_limit(ax, x_limit=(0, 90), y_limit=(-200, 20))
         self._set_annotation(ax, 'Time in cycle (s)', 'Distance (m)', grid=False)
+        self._save_figure(fig, name_prefix)
+
+    def plot_corridor_ts(self, signal_df, trajs_df, name_prefix):
+        x_lists, y_lists = extract_ts_lists_from_df(trajs_df, 'time (sec)', 'distance (meter)')
+        signal_group = signal_df.groupby('position')
+
+        fig, ax = self._create_plot()
+        self._plot_ts(ax, x_lists, y_lists, color='k', alpha=0.008)
+        self._plot_cycle(ax, cycle=90, num=2)
+        for pos, group in signal_group:
+            signal_list = group[['start', 'end']].to_numpy().tolist()
+            self._plot_signal_bar(ax, pos=pos, signal_list=signal_list,
+                                  color_list=group['signal'].map(SIGNAL_TO_COLOR).tolist(), lw=2)
+        self._set_limit(ax, x_limit=(0, 270), y_limit=(0, 1800))
+        self._set_annotation(ax, 'Time (s)', 'Distance (m)', grid=False)
+        self._save_figure(fig, name_prefix)
+
+    def plot_corridor_pts(self, signal_df, pts_df, name_prefix):
+        alphas = pts_df['probability'].to_numpy().clip(0, 1).tolist()
+        segments = list(zip(pts_df[['t1', 's1']].to_numpy().tolist(), pts_df[['t2', 's2']].to_numpy().tolist()))
+        signal_group = signal_df.groupby('position')
+
+        fig, ax = self._create_plot()
+        ax.add_collection(LineCollection(segments, linewidths=1.5,
+                                         color=[(0, 0, 0, _) for _ in alphas]))
+        for pos, group in signal_group:
+            signal_list = group[['start', 'end']].to_numpy().tolist()
+            self._plot_signal_bar(ax, pos=pos, signal_list=signal_list,
+                                  color_list=group['signal'].map(SIGNAL_TO_COLOR).tolist(), lw=2)
+        self._plot_cycle(ax, cycle=90, num=2)
+        self._set_limit(ax, x_limit=(0, 270), y_limit=(0, 1800))
+        self._set_annotation(ax, 'Time (s)', 'Distance (m)', grid=False)
+        self._save_figure(fig, name_prefix)
+
+    def plot_speed_heatmap(self, df, name_prefix):
+
+        fig, ax = self._create_plot()
+        cmap = self.build_cmap()
+        _ = ax.imshow(df.to_numpy(), cmap=cmap, vmin=-1, vmax=55, interpolation='none')
+        cb = plt.colorbar(_, fraction=0.04125, pad=0.04)
+        ax.set_aspect(0.5)
+        self._set_xticks(ax, [i * 50 / 270 * 31 * 3 * 5 for i in range(6)], [0, 50, 100, 150, 200, 250])
+        self._set_yticks(ax, [(i * 200 + 130) / 1730 * 167 * 5 for i in range(9)], np.linspace(1600, 0, 9).astype(int))
+        self._set_annotation(ax, 'Time in cycle (s)', 'Distance (m)', grid=False)
+        self._set_limit(cb.ax, y_limit=(0,55), x_limit=None)
+        self._set_annotation(cb.ax, '', 'Speed (km/h)', grid=False)
         self._save_figure(fig, name_prefix)

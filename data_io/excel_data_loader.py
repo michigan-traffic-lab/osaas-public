@@ -9,8 +9,8 @@ class ExcelDataLoader:
     def __init__(self, file_path: Path):
         self.file_path = file_path
 
-    def load_simple(self, sheet_name: str):
-        df = pd.read_excel(self.file_path, sheet_name=sheet_name)
+    def load_simple(self, sheet_name: str, index_col: int = None):
+        df = pd.read_excel(self.file_path, sheet_name=sheet_name, index_col=index_col)
         return df
 
     def load_complex(self, sheet_name: str, title_list: List[str]):

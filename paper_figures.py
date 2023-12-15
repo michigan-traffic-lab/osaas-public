@@ -52,5 +52,28 @@ def fig3():
     plotter.plot_movement_ts(signal_df, trajs_df, 'Fig3g')
 
 
+def fig4():
+    fig_dl = ExcelDataLoader(figure_data_dir / 'Fig4.xlsx')
+    plotter = Plotter(figure_output_dir / 'Fig4', fig_size=(6, 5), fig_format='png', dpi=300)
+
+    # Fig.4b
+    fig4b_df_list = fig_dl.load_complex('Fig.4b', ['Signal Bar', 'Trajectories'])
+    signal_df, trajs_df = fig4b_df_list
+    plotter.plot_corridor_ts(signal_df, trajs_df, 'Fig4b')
+
+    # Fig.4c
+    fig4c_df_list = fig_dl.load_complex('Fig.4c', ['Signal Bar', 'PTS Segments'])
+    signal_df, pts_df = fig4c_df_list
+    plotter.plot_corridor_pts(signal_df, pts_df, 'Fig4c')
+
+    # Fig.4e
+    fig4e_df = fig_dl.load_simple('Fig.4e', index_col=0)
+    plotter.plot_speed_heatmap(fig4e_df, 'Fig4e')
+
+    # Fig.4f
+    fig4f_df = fig_dl.load_simple('Fig.4f', index_col=0)
+    plotter.plot_speed_heatmap(fig4f_df, 'Fig4f')
+
+
 if __name__ == '__main__':
-    fig3()
+    fig4()
