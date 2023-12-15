@@ -226,7 +226,7 @@ class Plotter:
         self._set_annotation(ax, 'Time in cycle (s)', 'Distance (m)', grid=False)
         self._save_figure(fig, name_prefix)
 
-    def plot_corridor_ts(self, signal_df, trajs_df, name_prefix):
+    def plot_corridor_ts(self, signal_df, trajs_df, name_prefix, flip=False):
         x_lists, y_lists = extract_ts_lists_from_df(trajs_df, 'time (sec)', 'distance (meter)')
         signal_group = signal_df.groupby('position')
 
@@ -237,7 +237,10 @@ class Plotter:
             signal_list = group[['start', 'end']].to_numpy().tolist()
             self._plot_signal_bar(ax, pos=pos, signal_list=signal_list,
                                   color_list=group['signal'].map(SIGNAL_TO_COLOR).tolist(), lw=2)
-        self._set_limit(ax, x_limit=(0, 270), y_limit=(0, 1800))
+        if flip:
+            self._set_limit(ax, x_limit=(0, 270), y_limit=(1800, 0))
+        else:
+            self._set_limit(ax, x_limit=(0, 270), y_limit=(0, 1800))
         self._set_annotation(ax, 'Time (s)', 'Distance (m)', grid=False)
         self._save_figure(fig, name_prefix)
 

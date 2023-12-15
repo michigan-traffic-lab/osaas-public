@@ -96,10 +96,21 @@ def fig5():
 
     # Fig.5f
     plotter.size = (7, 6)
-    fig5f_df_list = fig_dl.load_complex('Fig.5f',['Optimal offset: 36 (s)'])
+    fig5f_df_list = fig_dl.load_complex('Fig.5f', ['Optimal offset: 36 (s)'])
     bar_df, = fig5f_df_list
     plotter.plot_cost_wrt_offset(bar_df, 'Fig5f')
 
 
+def fig6():
+    fig_dl = ExcelDataLoader(figure_data_dir / 'Fig6.xlsx')
+    plotter = Plotter(figure_output_dir / 'Fig6', fig_size=(6, 5), fig_format='png', dpi=300)
+
+    # Fig.6a - Fig.6d
+    for idx, sub_fig in enumerate(['a', 'b', 'c', 'd']):
+        fig6_df_list = fig_dl.load_complex(f'Fig.6{sub_fig}', ['Signal Bar', 'Trajectories'])
+        signal_df, trajs_df = fig6_df_list
+        plotter.plot_corridor_ts(signal_df, trajs_df, f'Fig6{sub_fig}', flip=idx % 2)
+
+
 if __name__ == '__main__':
-    fig5()
+    fig6()
