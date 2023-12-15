@@ -29,7 +29,7 @@ class ExcelDataLoader:
 
     def _find_title_row(self, title: str, sheet_name: str):
         df = pd.read_excel(self.file_path, sheet_name=sheet_name, header=None)
-        _ = df.index[df[0].str.contains(title, na=False)].tolist()
+        _ = df.index[df[0].str.contains(title, na=False, regex=False)].tolist()
         if _:
             return _[0]
         else:

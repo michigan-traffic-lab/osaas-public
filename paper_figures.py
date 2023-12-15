@@ -75,5 +75,31 @@ def fig4():
     plotter.plot_speed_heatmap(fig4f_df, 'Fig4f')
 
 
+def fig5():
+    fig_dl = ExcelDataLoader(figure_data_dir / 'Fig5.xlsx')
+    plotter = Plotter(figure_output_dir / 'Fig5', fig_size=(5, 4), fig_format='png', dpi=300)
+
+    # Fig.5b
+    fig5b_df_list = fig_dl.load_complex('Fig.5b',
+                                        ['Current Split: 90 (s) major, 30 (s) minor; '
+                                         'Minimum Split: 96 (s) major, 24 (s) minor; Gradient: -0.2741 (hr/s)',
+                                         'gradient (black dashed line)'])
+    bar_df, line_df = fig5b_df_list
+    plotter.plot_cost_wrt_green_split(bar_df, line_df, 'Fig5b')
+
+    # Fig.5c
+    fig5c_df_list = fig_dl.load_complex('Fig.5c',
+                                        ['Current Cycle: 120 (s), Minimum Cycle: 100 (s), Gradient: 0.1017 (hr/s)',
+                                         'gradient (black dashed line)'])
+    bar_df, line_df = fig5c_df_list
+    plotter.plot_cost_wrt_cycle_length(bar_df, line_df, 'Fig5c')
+
+    # Fig.5f
+    plotter.size = (7, 6)
+    fig5f_df_list = fig_dl.load_complex('Fig.5f',['Optimal offset: 36 (s)'])
+    bar_df, = fig5f_df_list
+    plotter.plot_cost_wrt_offset(bar_df, 'Fig5f')
+
+
 if __name__ == '__main__':
-    fig4()
+    fig5()
