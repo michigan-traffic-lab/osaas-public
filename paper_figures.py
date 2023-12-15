@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import inspect
+import sys
 from pathlib import Path
 
 from data_io.excel_data_loader import ExcelDataLoader
@@ -112,5 +114,14 @@ def fig6():
         plotter.plot_corridor_ts(signal_df, trajs_df, f'Fig6{sub_fig}', flip=idx % 2)
 
 
+def reproduce_all():
+    for name, fn in inspect.getmembers(sys.modules[__name__], inspect.isfunction):
+        if name.startswith('fig'):
+            print(f'Generating sub-figures for Figure {name[3:]}...')
+            fn()
+            print(f'All sub-figures in Figure {name[3:]} are generated.\n')
+    print('All figures are generated.')
+
+
 if __name__ == '__main__':
-    fig6()
+    reproduce_all()

@@ -17,7 +17,7 @@ The project is structured as follows:
 
 ```plain
 .
-├── data                      # Data folder for traffic networks and calibrated curves
+├── data                      # Data folder for demo and reproducing figures
 ├── LICENSE                   # License file
 ├── demo.py                   # Demo from calibrated curves to PTS diagram
 ├── models                    # Data structure and utility functions for calibrated curves
@@ -35,7 +35,7 @@ The project is structured as follows:
 
 #### Python
 
-This project is tested on Python 3.8.13.
+This project is tested on Python 3.8.13 under Ubuntu 22.04, macOS 12.6, and Windows 11.
 
 #### Virtual Environment
 

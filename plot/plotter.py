@@ -3,9 +3,7 @@ import matplotlib
 import numpy as np
 from matplotlib import pyplot as plt, colors
 from matplotlib.collections import LineCollection
-from matplotlib.colorbar import ColorbarBase
-from matplotlib.colors import ListedColormap, Normalize
-from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
+from matplotlib.colors import ListedColormap
 
 from data_io.converter import extract_ts_lists_from_df
 
