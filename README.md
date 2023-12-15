@@ -8,6 +8,8 @@ Based on calibrated arrival curves, PTS diagram of a corridor can be generated.
 With the PTS diagram, we can optimize the traffic signal control to improve the
 traffic efficiency.
 
+We also provide the code to reproduce the figures in the paper.
+
 
 ### Project structure
 
@@ -17,7 +19,7 @@ The project is structured as follows:
 .
 ├── data                      # Data folder for traffic networks and calibrated curves
 ├── LICENSE                   # License file
-├── main.py                   # Entry point of the project
+├── demo.py                   # Demo from calibrated curves to PTS diagram
 ├── models                    # Data structure and utility functions for calibrated curves
 ├── mtldp                     # Data structure for traffic network
 ├── output                    # Output folder for generated pts diagram
@@ -73,13 +75,20 @@ $ conda activate osaas
 #### Run
 
 ```shell
-(osaas) $ python main.py
+(osaas) $ python demo.py
 ```
 
 This command will generate the PTS diagram for the corridor 'Adams Rd'.
 It will first generate the PTS diagram based on its old offset. And then it will
 generate the PTS diagram based on the optimized offset. Generated PTS diagrams
-will be saved in `output` folder.
+will be saved in `output/demo` folder.
+
+```shell
+(osaas) $ python paper_figures.py
+```
+This command will generate all the non-illustration figures in the paper.
+Generated figures will be saved in `output/figures` folder.
+
 
 ## Contributing
 
