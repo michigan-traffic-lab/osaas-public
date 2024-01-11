@@ -1,5 +1,7 @@
 # Traffic light optimization with low penetration rate vehicle trajectory data
 
+[![DOI](https://zenodo.org/badge/730009195.svg)](https://zenodo.org/doi/10.5281/zenodo.10493793)
+
 ## Introduction
 
 In this project, we implement the queueing model and probabilistic time-space
