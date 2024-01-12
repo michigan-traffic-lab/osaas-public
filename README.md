@@ -52,6 +52,8 @@ Anaconda/Miniconda will be used in the following documentation.
 
 ### Usage
 
+The total installation time is usually under 15 minutes. And it highly depends on the network.
+
 ### Get the source code
 
 Get the source code via `git clone` command.
@@ -83,13 +85,14 @@ $ conda activate osaas
 This command will generate the PTS diagram for the corridor 'Adams Rd'.
 It will first generate the PTS diagram based on its old offset. And then it will
 generate the PTS diagram based on the optimized offset. Generated PTS diagrams
-will be saved in `output/demo` folder.
+will be saved in `output/demo` folder. This demo will take about one minutes.
 
 ```shell
 (osaas) $ python paper_figures.py
 ```
 This command will generate all the non-illustration figures in the paper.
-Generated figures will be saved in `output/figures` folder.
+Generated figures will be saved in `output/figures` folder. This reproduction 
+process will take about 10 minutes.
 
 
 ## Contributing
