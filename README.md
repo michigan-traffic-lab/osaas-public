@@ -83,9 +83,12 @@ $ conda activate osaas
 ```
 
 This command will generate the PTS diagram for the corridor 'Adams Rd'.
-It will first generate the PTS diagram based on its old offset. And then it will
-generate the PTS diagram based on the optimized offset. Generated PTS diagrams
-will be saved in `output/demo` folder. This demo will take about one minutes.
+It will first generate the PTS diagram based on its old offset. The generated
+northbound PTS diagram is the same as Fig4(c) in the main paper, which uses
+the information extracted from the aggregated time-space diagram in Fig4(b).
+Then it will generate the PTS diagram based on the optimized offset.
+Generated PTS diagrams will be saved in `output/demo` folder. This demo will 
+take about one minutes.
 
 ```shell
 (osaas) $ python paper_figures.py
