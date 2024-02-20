@@ -12,6 +12,25 @@ traffic efficiency.
 
 We also provide the code to reproduce the figures in the paper.
 
+### Citation
+If you find this repo is helpful, please cite the following paper:
+
+```bibtex
+@article{Wang2024osaas,
+    author="Wang, Xingmin and Jerome, Zachary and Wang, Zihao and Zhang, Chenhao and Shen, Shengyin and Kumar, Vivek Vijaya and Bai, Fan and Krajewski, Paul and Deneau, Danielle and Jawad, Ahmad and Jones, Rachel and Piotrowicz, Gary and Liu, Henry X.",
+    title="Traffic light optimization with low penetration rate vehicle trajectory data",
+    journal="Nature Communications",
+    year="2024",
+    month="Feb",
+    day="20",
+    volume="15",
+    number="1",
+    pages="1306",
+    issn="2041-1723",
+    doi="10.1038/s41467-024-45427-4",
+    url="https://doi.org/10.1038/s41467-024-45427-4"
+}
+```
 
 ### Project structure
 
